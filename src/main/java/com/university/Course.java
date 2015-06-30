@@ -28,5 +28,35 @@ public class Course {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
+	public long getId() {
+		return id;
+	}
 
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Set<Student2> getStudents() {
+		return students;
+	}
+
+	public void setStudents(Set<Student2> students) {
+		this.students = students;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
 }

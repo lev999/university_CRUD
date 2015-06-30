@@ -51,9 +51,10 @@ public class StudentController {
 									  Map<String, Object> modelMap,@RequestParam String action) {
 
 		modelMap.put("students", studentDAO.getAllStudents());
-		modelMap.put("alert","JUST FOR CHECK DATA! "+userFormData.getCourseName()+" "+userFormData.getStudentName());
+		modelMap.put("alert","JUST FOR CHECK DATA! "+userFormData.getCourseName()+"-"+userFormData.getStudentName());
 
 
+		Course course = new Course();
 		return "index";
 	}
 

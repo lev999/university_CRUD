@@ -26,6 +26,27 @@ public class Student2 {
 			inverseJoinColumns={@JoinColumn(name="course_id")})
 	private Set<Course> courses = new HashSet<Course>();
 
+	public long getId() {
+		return id;
+	}
 
+	public void setId(long id) {
+		this.id = id;
+	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Set<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
+	}
 }
