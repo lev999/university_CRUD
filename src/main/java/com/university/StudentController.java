@@ -15,6 +15,7 @@ public class StudentController {
 
 	@Autowired private StudentDAO studentDAO;
 	@Autowired private CourseDAO courseDAO;
+	@Autowired private Student2DAO student2DAO;
 
 	private static final String STUDENT_BY_COURSE="Show all students on course";
 	private static final String COURSE_BY_STUDENT="Show all courses of student";
@@ -56,7 +57,9 @@ public class StudentController {
 		student2.setName(userFormData.getStudentName());
 		course.getStudents().add(student2);
 
+
 		courseDAO.updateCourse(course);
+//		student2DAO.updateStudent(student2);
 		return "index";
 	}
 

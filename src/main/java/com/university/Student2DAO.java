@@ -6,19 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Repository
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class CourseDAO {
+public class Student2DAO {
 	
 	@Autowired private SessionFactory sessionFactory;
 	
 	@Transactional
-	public void updateCourse(Course course) {
+	public void updateStudent(Student2 student2) {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(course);
-		session.update(course);
+		session.save(student2);
 	}
 
 }
