@@ -5,7 +5,7 @@ import java.util.Date;
 
 
 @Entity
-@Table(name = "student")
+@Table(name = "student",schema = "univ")
 public class Student {
 	@Id @GeneratedValue private long id;
 	private String name;
