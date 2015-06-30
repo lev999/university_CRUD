@@ -20,6 +20,9 @@ public class StudentController {
 
 	@Autowired private StudentDAO studentDAO;
 
+	private static final String STUDENT_BY_COURSE="Show all students on course";
+	private static final String COURSE_BY_STUDENT="Show all courses of student";
+	private static final String STUDENT_REGISTER="Register student for course";
 
 	private List fillCourses(){
 		List<String> courseList = new ArrayList();
@@ -46,26 +49,28 @@ public class StudentController {
 	public String processRegistration(@ModelAttribute("userForm") Student student,
 									  Map<String, Object> modelMap,@RequestParam String action) {
 		modelMap.put("courseList", fillCourses());
-		if(student.getName().equals("")) {
+		if(student.getName().equals("")
+				&&!action.equals(STUDENT_BY_COURSE)
+				||!student.getName().matches( "^[a-zA-Z\\s]*$")) {
 			modelMap.put("students", studentDAO.getAllStudents());
 			modelMap.put("alert", "List of all students and courses");
-			modelMap.put("alert_error", "not correct input");
+			modelMap.put("alert_error", "not correct name input");
 			return "index";
 		}
 
-		if(action.equals("Register student for course")){
+		if(action.equals(STUDENT_REGISTER)){
 			student.setDate(new Date());
 			studentDAO.addStudent(student);
 			modelMap.put("students", studentDAO.getAllStudents());
 			modelMap.put("alert","List of all students and courses");
 
 		}
-		else if(action.equals("Show all students on course")){
+		else if(action.equals(STUDENT_BY_COURSE)){
 			modelMap.put("students", studentDAO.getStudentsByCourse(student));
 			modelMap.put("alert","List of all students on course");
 
 		}
-		else if (action.equals("Show all courses of student")){
+		else if (action.equals(COURSE_BY_STUDENT)){
 			modelMap.put("students", studentDAO.getCourseByStudent(student));
 			modelMap.put("alert","List of all courses of student");
 
