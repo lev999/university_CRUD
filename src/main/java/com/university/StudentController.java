@@ -41,13 +41,6 @@ public class StudentController {
 		return "index";
 	}
 
-//	@InitBinder
-//	public void initBinder(WebDataBinder binder) {
-//
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:MM:SS");
-//		dateFormat.setLenient(false);
-//		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-//	}
 
 	@RequestMapping(value = "/register",method = RequestMethod.POST)
 	public String processRegistration(@ModelAttribute("userForm") Student student,
