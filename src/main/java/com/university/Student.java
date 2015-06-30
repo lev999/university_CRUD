@@ -7,7 +7,7 @@ import java.util.Date;
 @Entity
 @Table(name = "student",schema = "univ")
 public class Student {
-	@Id @GeneratedValue private long id;
+	@Id  private long id;
 	private String name;
 	private String course;
 	@Column(columnDefinition ="TIMESTAMP")
