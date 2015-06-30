@@ -16,8 +16,7 @@ public class Student {
 	private String name;
 	private String course;
 
-	//	@Column(columnDefinition ="TIMESTAMP")
-	@Column(name = "date", columnDefinition = "timestampt without time zone")
+	@Column(name = "date", columnDefinition = "timestamp without time zone")
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
