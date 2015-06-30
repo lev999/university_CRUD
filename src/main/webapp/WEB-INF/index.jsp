@@ -12,20 +12,20 @@
 <body>
 <div align="center">
 	<div style="color: crimson">${alert_error}</div>
-	<form:form action="register" method="post" commandName="userForm">
+	<form:form action="register" method="post" commandName="userFormData">
 		<table border="0">
 			<tr>
 				<td colspan="2" align="center"><h2>University time table</h2></td>
 			</tr>
 			<tr>
 				<td>Student Name:</td>
-				<td><form:input path="name" /></td>
+				<td><form:input path="studentName" /></td>
 			</tr>
 
 
 			<tr>
 				<td>Course:</td>
-				<td><form:select path="course" items="${courseList}" /></td>
+				<td><form:select path="courseName" items="${courseList}" /></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center"><input type="submit" name="action" value="Register student for course" /></td>

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.hsqldb.rights.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -33,9 +34,9 @@ public class StudentController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String viewRegistration(Map<String, Object> modelMap,@ModelAttribute Student model) {
-		Student userForm = new Student();
-		modelMap.put("userForm", userForm);
+	public String viewRegistration(Map<String, Object> modelMap) {
+		UserFormData userFormData = new UserFormData();
+		modelMap.put("userFormData", userFormData);
 
 		modelMap.put("courseList", fillCourses());
 
@@ -46,35 +47,12 @@ public class StudentController {
 
 
 	@RequestMapping(value = "/register",method = RequestMethod.POST)
-	public String processRegistration(@ModelAttribute("userForm") Student student,
+	public String processRegistration(@ModelAttribute("userFormData") UserFormData userFormData,
 									  Map<String, Object> modelMap,@RequestParam String action) {
-		modelMap.put("courseList", fillCourses());
-		if(student.getName().equals("")
-				&&!action.equals(STUDENT_BY_COURSE)
-				||!student.getName().matches( "^[a-zA-Z\\s]*$")) {
-			modelMap.put("students", studentDAO.getAllStudents());
-			modelMap.put("alert", "List of all students and courses");
-			modelMap.put("alert_error", "not correct name input");
-			return "index";
-		}
 
-		if(action.equals(STUDENT_REGISTER)){
-			student.setDate(new Date());
-			studentDAO.addStudent(student);
-			modelMap.put("students", studentDAO.getAllStudents());
-			modelMap.put("alert","List of all students and courses");
+		modelMap.put("students", studentDAO.getAllStudents());
+		modelMap.put("alert","JUST FOR CHECK DATA! "+userFormData.getCourseName()+" "+userFormData.getStudentName());
 
-		}
-		else if(action.equals(STUDENT_BY_COURSE)){
-			modelMap.put("students", studentDAO.getStudentsByCourse(student));
-			modelMap.put("alert","List of all students on course");
-
-		}
-		else if (action.equals(COURSE_BY_STUDENT)){
-			modelMap.put("students", studentDAO.getCourseByStudent(student));
-			modelMap.put("alert","List of all courses of student");
-
-		}
 
 		return "index";
 	}
