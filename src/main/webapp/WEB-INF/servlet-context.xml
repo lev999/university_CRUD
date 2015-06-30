@@ -18,18 +18,38 @@
   
   <!-- Scan classpath for annotations (eg: @Service, @Repository etc) -->
   <context:component-scan base-package="com.university"/>
-  
-  <!-- JDBC Data Source. It is assumed you have MySQL running on localhost port 3306 with 
-       username root and blank password. Change below if it's not the case -->
+  <!--<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+    <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
+    <!--<property name="url" value="jdbc:mysql://localhost:3306/univ"/>-->
+    <!--<property name="username" value="root"/>-->
+    <!--<property name="password" value="123qwee"/>-->
+    <!--<property name="validationQuery" value="SELECT 1"/>-->
+  <!--</bean>-->
+
   <bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-    <property name="url" value="jdbc:mysql://localhost:3306/univ"/>
-    <property name="username" value="root"/>
+    <property name="driverClassName" value="org.postgresql.Driver"/>
+    <property name="url" value="jdbc:postgresql://localhost:5432/univ"/>
+    <property name="username" value="postgres"/>
     <property name="password" value="123qwee"/>
     <property name="validationQuery" value="SELECT 1"/>
-
   </bean>
-  
+
+  <!--<session-factory>-->
+    <!--<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>-->
+    <!--<property name="connection.driver_class">org.postgresql.Driver</property>-->
+    <!--<property name="connection.url">jdbc:postgresql://host:port/database</property>-->
+    <!--<property name="connection.username">username</property>-->
+    <!--<property name="connection.password">password</property>-->
+
+    <!--<property name="cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>-->
+
+    <!--<property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>-->
+    <!--<property name="current_session_context_class">thread</property>-->
+    <!--<property name="hibernate.show_sql">false</property>-->
+  <!--</session-factory>-->
+
+
+
   <!-- Hibernate Session Factory -->
   <bean id="mySessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
     <property name="dataSource" ref="myDataSource"/>
@@ -40,7 +60,9 @@
     </property>
     <property name="hibernateProperties">
       <value>
-        hibernate.dialect=org.hibernate.dialect.MySQLDialect
+        <!--hibernate.dialect=org.hibernate.dialect.MySQLDialect-->
+        hibernate.dialect=org.hibernate.dialect.PostgreSQL82Dialect
+
       </value>
 
 
