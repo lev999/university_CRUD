@@ -31,7 +31,7 @@
     <property name="url" value="jdbc:postgresql://localhost:5432/univ"/>
     <property name="username" value="postgres"/>
     <property name="password" value="123qwee"/>
-    <property name="validationQuery" value="SELECT 1"/>
+    <!--<property name="validationQuery" value="SELECT 1"/>-->
   </bean>
 
   <!--<session-factory>-->

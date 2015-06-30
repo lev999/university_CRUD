@@ -1,5 +1,7 @@
 package com.university;
 
+import com.sun.istack.internal.NotNull;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -14,7 +16,11 @@ public class Student {
 
 	private String name;
 	private String course;
-	@Column(columnDefinition ="TIMESTAMP")
+
+	//	@Column(columnDefinition ="TIMESTAMP")
+	@Column(name = "date", columnDefinition = "timestampt without time zone")
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	public Date getDate() {

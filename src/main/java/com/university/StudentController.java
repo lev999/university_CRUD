@@ -41,13 +41,13 @@ public class StudentController {
 		return "index";
 	}
 
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:MM:SS");
-		dateFormat.setLenient(false);
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-	}
+//	@InitBinder
+//	public void initBinder(WebDataBinder binder) {
+//
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:MM:SS");
+//		dateFormat.setLenient(false);
+//		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+//	}
 
 	@RequestMapping(value = "/register",method = RequestMethod.POST)
 	public String processRegistration(@ModelAttribute("userForm") Student student,
@@ -61,6 +61,7 @@ public class StudentController {
 		}
 
 		if(action.equals("Register student for course")){
+			student.setDate(new Date());
 			studentDAO.addStudent(student);
 			modelMap.put("students", studentDAO.getAllStudents());
 			modelMap.put("alert","List of all students and courses");
