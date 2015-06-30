@@ -7,7 +7,11 @@ import java.util.Date;
 @Entity
 @Table(name = "student",schema = "univ")
 public class Student {
-	@Id  private long id;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+
 	private String name;
 	private String course;
 	@Column(columnDefinition ="TIMESTAMP")
