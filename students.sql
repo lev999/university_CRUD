@@ -11,10 +11,23 @@ CREATE  TABLE `univ`.`student` (
 INSERT INTO `univ`.`student` (`name`, `course`) VALUES ('Petrov', 'Math');
 
 #for postgresql
-CREATE SCHEMA univ
-CREATE  TABLE univ.student (
-  id SERIAL  NOT NULL ,
-  name VARCHAR(45) NULL ,
-  course VARCHAR(45) NULL ,
-  date timestamp without time zone
+CREATE SCHEMA univ_schema
+CREATE TABLE univ_schema.student2 (
+    student2_id serial PRIMARY KEY
+  , student2_name    text NOT NULL
+
+);
+
+CREATE TABLE univ_schema.course (
+    course_id  serial PRIMARY KEY
+  , course_name     text NOT NULL
+  , course_date date NOT NULL DEFAULT now()::date
+);
+
+CREATE TABLE univ_schema.course_student2 (
+    course_id    int REFERENCES univ_schema.course (course_id) ON UPDATE CASCADE
+  , student2_id int REFERENCES univ_schema.student2 (student2_id) ON UPDATE CASCADE
+
+
+  , CONSTRAINT course_student2_pkey PRIMARY KEY (course_id, student2_id)
 );
