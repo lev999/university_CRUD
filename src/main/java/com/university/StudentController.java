@@ -28,11 +28,7 @@ public class StudentController {
 	public String viewRegistration(Map<String, Object> modelMap) {
 		UserFormData userFormData = new UserFormData();
 		modelMap.put("userFormData", userFormData);
-
 		modelMap.put("courseList", fillCourses());
-
-		modelMap.put("students", student3DAO.getAllStudents());
-		modelMap.put("alert", "List of all students and courses");
 		return "index";
 	}
 
@@ -55,7 +51,6 @@ public class StudentController {
 			student.setName(userFormData.getStudentName());
 		}
 
-
 		if(action.equals(Buttons.STUDENT_REGISTER.getValue())) {
 
 			if(!isInputNameValid(student))	return "index";
@@ -75,7 +70,7 @@ public class StudentController {
 		else if(action.equals(Buttons.COURSES_BY_STUDENT.getValue())){
 			if(!isInputNameValid(student))	return "index";
 			modelMap.put("alert","Course:Registration date");
-			modelMap.put("students", printAllStudents(new ArrayList(course.getCourseStudents()), Buttons.COURSES_BY_STUDENT));
+			modelMap.put("students", printAllStudents(new ArrayList(student.getCourseStudents()), Buttons.COURSES_BY_STUDENT));
 		}
 		else if(action.equals(Buttons.SHOW_ALL_COURSES.getValue())){
 			modelMap.put("alert","All Courses");
@@ -132,6 +127,7 @@ public class StudentController {
 				return stringBuilder
 						.append(((CourseStudent) row).getStudent().getName())
 						.toString();
+
 		}
 
 	return null;

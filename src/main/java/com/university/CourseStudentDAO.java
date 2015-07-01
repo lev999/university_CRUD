@@ -24,31 +24,16 @@ public class CourseStudentDAO {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(courseStudent);
 	}
-	@Transactional
-	public Set<Course> getCoursesByStudent(long studentId) {
-		Session session = sessionFactory.getCurrentSession();
 
-		String str="SELECT course_student_id FROM Course_student s WHERE s.student_id=:studentId";
-		Query query=session.createQuery(str);
-		query.setParameter("studentId", studentId);
-		List<Integer> entityId = query.list();
-
-		Set<Course> courses = new HashSet<Course>();
-		for (Integer id_course : entityId) {
-			System.out.println("ID========="+id_course);
-			courses.add((Course) session.get(Course.class, id_course));
-		}
-		return courses;
-	}
 	@Transactional
 	public boolean isCourseAndStudentInDB(Course course, Student student) {
 		Session session = sessionFactory.getCurrentSession();
-StringBuilder queryStr=new StringBuilder();
+		StringBuilder queryStr=new StringBuilder();
 		queryStr
 				.append("SELECT id FROM CourseStudent s WHERE s.course=")
 				.append(course.getId())
 				.append(" AND s.student=")
-		.append(student.getId());
+				.append(student.getId());
 		Query query=session.createQuery(queryStr.toString());
 
 		try{
