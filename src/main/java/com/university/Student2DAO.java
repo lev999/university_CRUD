@@ -15,7 +15,7 @@ public class Student2DAO {
 	@Transactional
 	public void updateStudent(Student2 student2) {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(student2);
+		session.saveOrUpdate(student2);
 	}
 
 }

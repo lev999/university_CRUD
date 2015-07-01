@@ -17,8 +17,8 @@ public class CourseDAO {
 	@Transactional
 	public void updateCourse(Course course) {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(course);
-		session.update(course);
+//		session.save(course);
+		session.saveOrUpdate(course);
 	}
 
 }

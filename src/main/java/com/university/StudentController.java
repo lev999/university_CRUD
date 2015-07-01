@@ -49,17 +49,47 @@ public class StudentController {
 		modelMap.put("students", studentDAO.getAllStudents());
 		modelMap.put("alert", "JUST FOR CHECK DATA! " + userFormData.getCourseName() + "-" + userFormData.getStudentName());
 
+//
+//		Course course = new Course();
+//		course.setDate(new Date());
+//		course.setName(userFormData.getCourseName());
+//		Student2 student2 = new Student2();
+//		student2.setName(userFormData.getStudentName());
+//		course.getStudents().add(student2);
 
-		Course course = new Course();
-		course.setDate(new Date());
-		course.setName(userFormData.getCourseName());
-		Student2 student2 = new Student2();
-		student2.setName(userFormData.getStudentName());
-		course.getStudents().add(student2);
 
+//		Meeting meeting1 = new Meeting("Quaterly Sales meeting");
+//		Meeting meeting2 = new Meeting("Weekly Status meeting");
+//
+//		Employee employee1 = new Employee("Sergey", "Brin");
+//		Employee employee2 = new Employee("Larry", "Page");
+//
+//		employee1.getMeetings().add(meeting1);
+//		employee1.getMeetings().add(meeting2);
+//		employee2.getMeetings().add(meeting1);
+//
+//		session.save(employee1);
+//		session.save(employee2);
 
-		courseDAO.updateCourse(course);
-//		student2DAO.updateStudent(student2);
+		Student2 student2a=new Student2();
+		Student2 student2b=new Student2();
+
+		student2a.setName("bbb");
+		student2b.setName("aaa");
+		Course courseA = new Course();
+		Course courseB = new Course();
+
+		courseA.setName("course A");
+		courseB.setName("course B");
+		courseA.setDate(new Date());
+		courseB.setDate(new Date());
+
+		student2a.getCourses().add(courseA);
+		student2a.getCourses().add(courseB);
+		student2b.getCourses().add(courseA);
+
+		student2DAO.updateStudent(student2a);
+		student2DAO.updateStudent(student2b);
 		return "index";
 	}
 
