@@ -11,7 +11,6 @@
 </head>
 <body>
 <div align="center">
-	<div style="color: crimson">${alert_error}</div>
 	<form:form action="register" method="post" commandName="userFormData">
 		<table border="0">
 			<tr>
@@ -47,12 +46,11 @@
 	<br>
 	<div style="color: blue">${alert}</div>
 
-<br>
-			<c:forEach var="p" items="${students}">
-				${p}<hr>
+	<br>
+	<c:forEach var="p" items="${students}">
+		${p}<hr>
 
-			</c:forEach>
-		</div>
+	</c:forEach>
 </div>
 
 </body>
