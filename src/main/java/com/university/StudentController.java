@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class StudentController {
 
-	@Autowired private Student3DAO student3DAO;
-	@Autowired private CourseDAO courseDAO;
-	@Autowired private StudentDAO studentDAO;
 	@Autowired private CourseStudentDAO courseStudentDAO;
 
 	private List fillCourses(){
@@ -39,8 +36,8 @@ public class StudentController {
 									  Map<String, Object> modelMap,@RequestParam String action) {
 		modelMap.put("courseList", fillCourses());
 
-		Student student= studentDAO.getStudent(userFormData.getStudentName());
-		Course course = courseDAO.getCourse(userFormData.getCourseName());
+		Student student= courseStudentDAO.getStudent(userFormData.getStudentName());
+		Course course = courseStudentDAO.getCourse(userFormData.getCourseName());
 
 		if (course == null) {
 			course = new Course();
@@ -74,11 +71,11 @@ public class StudentController {
 		}
 		else if(action.equals(Buttons.SHOW_ALL_COURSES.getValue())){
 			modelMap.put("alert","All Courses");
-			modelMap.put("students", printAllStudents(studentDAO.getAllCourses(), Buttons.SHOW_ALL_COURSES));
+			modelMap.put("students", printAllStudents(courseStudentDAO.getAllCourses(), Buttons.SHOW_ALL_COURSES));
 		}
 		else if(action.equals(Buttons.SHOW_ALL_STUDENTS.getValue())){
 			modelMap.put("alert","All students");
-			modelMap.put("students", printAllStudents(studentDAO.getAllStudents(),Buttons.SHOW_ALL_STUDENTS));
+			modelMap.put("students", printAllStudents(courseStudentDAO.getAllStudents(),Buttons.SHOW_ALL_STUDENTS));
 		}
 
 		return "index";
@@ -151,4 +148,5 @@ public class StudentController {
 		}
 
 	}
+
 }

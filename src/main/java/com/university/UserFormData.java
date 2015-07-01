@@ -1,8 +1,6 @@
 package com.university;
 
-/**
- * Created by pc-users on 6/30/2015.
- */
+
 public class UserFormData {
     private String studentName;
     private String CourseName;
