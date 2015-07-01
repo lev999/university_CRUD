@@ -44,53 +44,29 @@ public class StudentController {
 	@RequestMapping(value = "/register",method = RequestMethod.POST)
 	public String processRegistration(@ModelAttribute("userFormData") UserFormData userFormData,
 									  Map<String, Object> modelMap,@RequestParam String action) {
-
+		Set<Course> courses;
 		modelMap.put("students", studentDAO.getAllStudents());
 		modelMap.put("alert", "JUST FOR CHECK DATA! " + userFormData.getCourseName() + "-" + userFormData.getStudentName());
 		modelMap.put("courseList", fillCourses());
-//
-//		Course course = new Course();
-//		course.setDate(new Date());
-//		course.setName(userFormData.getCourseName());
-//		Student2 student2 = new Student2();
-//		student2.setName(userFormData.getStudentName());
-//		course.getStudents().add(student2);
-
-
-//		Meeting meeting1 = new Meeting("Quaterly Sales meeting");
-//		Meeting meeting2 = new Meeting("Weekly Status meeting");
-//
-//		Employee employee1 = new Employee("Sergey", "Brin");
-//		Employee employee2 = new Employee("Larry", "Page");
-//
-//		employee1.getMeetings().add(meeting1);
-//		employee1.getMeetings().add(meeting2);
-//		employee2.getMeetings().add(meeting1);
-//
-//		session.save(employee1);
-//		session.save(employee2);
 
 		Student2 student2=student2DAO.getStudent(userFormData.getStudentName());
 		Course course = courseDAO.getCourse(userFormData.getCourseName());
 
-		Set<Course> courses;
+
 		if (course==null){
 			course=new Course();
 			course.setName(userFormData.getCourseName());
 			course.setDate(new Date());
 		}
-		if(student2==null){
+		if (student2==null){
 			student2 = new Student2();
 			student2.setName(userFormData.getStudentName());
-			courses= new HashSet<Course>();
-			courses.add(course);
-			student2.setCourses(courses);
+			student2.setCourses(new HashSet<Course>());
 		}
-		else {
-			courses = student2.getCourses();
-			courses.add(course);
-			student2.setCourses(courses);
-		}
+
+		courses=student2.getCourses();
+		courses.add(course);
+		student2.setCourses(courses);
 
 		student2DAO.updateStudent(student2);
 		return "index";
