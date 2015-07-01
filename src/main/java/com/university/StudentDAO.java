@@ -45,6 +45,11 @@ public class StudentDAO {
 		Session session = sessionFactory.getCurrentSession();
 		return session.createCriteria(Student.class).list();
 	}
+	@Transactional
+	public List<Course> getAllCourses(){
+		Session session = sessionFactory.getCurrentSession();
+		return session.createCriteria(Course.class).list();
+	}
 
 
 

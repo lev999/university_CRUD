@@ -86,7 +86,7 @@ public class StudentController {
 			modelMap.put("students", printCourses(student.getCourseStudents()));
 		}
 		else if(action.equals(Buttons.SHOW_ALL_COURSES.getValue())){
-			modelMap.put("students", printCourses(student.getCourseStudents()));
+			modelMap.put("students", printAllStudents(studentDAO.getAllCourses(), Buttons.SHOW_ALL_COURSES));
 		}
 		else if(action.equals(Buttons.SHOW_ALL_STUDENTS.getValue())){
 			System.out.println("DDDD:"+studentDAO.getAllStudents());
@@ -99,7 +99,7 @@ public class StudentController {
 	private ArrayList<String> printAllStudents(List allEntities,Buttons buttons) {
 		ArrayList<String> outputArray = new ArrayList<String>();
 		for (Object row : allEntities) {
-			outputArray.add(prepareStr(row,buttons));
+			outputArray.add(prepareStr(row, buttons));
 		}
 		return outputArray;
 
@@ -109,8 +109,14 @@ public class StudentController {
 
 		switch (buttons){
 			case SHOW_ALL_STUDENTS:
-				return stringBuilder.append(((Student) row).getName()).toString();
+				return stringBuilder.
+						append(((Student) row).getName())
+						.toString();
 
+			case SHOW_ALL_COURSES:
+				return stringBuilder
+						.append(((Course)row).getName())
+						.toString();
 
 		}
 
