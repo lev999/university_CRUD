@@ -43,17 +43,19 @@ public class CourseStudentDAO {
 	@Transactional
 	public boolean isCourseAndStudentInDB(Course course, Student student) {
 		Session session = sessionFactory.getCurrentSession();
-
-		String str="SELECT id FROM Course_student s WHERE s.course_id=:courseId AND s.student_id=:studentId";
-		Query query=session.createQuery(str);
-		query.setParameter("courseId", course.getId());
-		query.setParameter("studentId", student.getId());
+StringBuilder queryStr=new StringBuilder();
+		queryStr
+				.append("SELECT id FROM CourseStudent s WHERE s.course=")
+				.append(course.getId())
+				.append(" AND s.student=")
+		.append(student.getId());
+		Query query=session.createQuery(queryStr.toString());
 
 		try{
 			Long entityId = (Long)query.list().get(0);
-			return false;
-		}catch (IndexOutOfBoundsException e){
 			return true;
+		}catch (IndexOutOfBoundsException e){
+			return false;
 		}
 	}
 

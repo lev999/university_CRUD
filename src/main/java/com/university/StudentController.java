@@ -55,42 +55,52 @@ public class StudentController {
 			student.setName(userFormData.getStudentName());
 		}
 
-		if(student.getName().equals("")
-				&&!action.equals(Buttons.STUDENTS_BY_COURSE)
-				||!student.getName().matches( "^[a-zA-Z\\s]*$")) {
-			return  "index";
-		}
 
 		if(action.equals(Buttons.STUDENT_REGISTER.getValue())) {
 
+			if(!isInputNameValid(student))	return "index";
 			CourseStudent courseStudent = new CourseStudent();
 			courseStudent.setDate(new Date());
 			courseStudent.setStudent(student);
 			courseStudent.setCourse(course);
-			courseStudentDAO.updateCourseStudent(courseStudent);
+			if(!courseStudentDAO.isCourseAndStudentInDB(course,student))
+				courseStudentDAO.updateCourseStudent(courseStudent);
 			modelMap.put("alert", "Data base updated");
 		}
 
 		else if(action.equals(Buttons.STUDENTS_BY_COURSE.getValue())){
+			modelMap.put("alert","Students");
 			modelMap.put("students", printAllStudents(new ArrayList (course.getCourseStudents()), Buttons.STUDENTS_BY_COURSE));
 		}
 		else if(action.equals(Buttons.COURSES_BY_STUDENT.getValue())){
-
-			modelMap.put("students", printAllStudents(new ArrayList (course.getCourseStudents()),Buttons.COURSES_BY_STUDENT));
+			if(!isInputNameValid(student))	return "index";
+			modelMap.put("alert","Course:Registration date");
+			modelMap.put("students", printAllStudents(new ArrayList(course.getCourseStudents()), Buttons.COURSES_BY_STUDENT));
 		}
 		else if(action.equals(Buttons.SHOW_ALL_COURSES.getValue())){
+			modelMap.put("alert","All Courses");
 			modelMap.put("students", printAllStudents(studentDAO.getAllCourses(), Buttons.SHOW_ALL_COURSES));
 		}
 		else if(action.equals(Buttons.SHOW_ALL_STUDENTS.getValue())){
-			System.out.println("DDDD:"+studentDAO.getAllStudents());
+			modelMap.put("alert","All students");
 			modelMap.put("students", printAllStudents(studentDAO.getAllStudents(),Buttons.SHOW_ALL_STUDENTS));
 		}
 
 		return "index";
 	}
 
+	private boolean isInputNameValid(Student student) {
+		if(!student.getName().equals("")
+				&&student.getName().matches( "^[a-zA-Z\\s]*$")) {
+
+			return  true;
+		}
+		return false;
+	}
+
 	private ArrayList<String> printAllStudents(List allEntities,Buttons buttons) {
 		ArrayList<String> outputArray = new ArrayList<String>();
+
 		for (Object row : allEntities) {
 			outputArray.add(prepareStr(row, buttons));
 		}
@@ -113,7 +123,6 @@ public class StudentController {
 
 			case COURSES_BY_STUDENT:
 				return stringBuilder
-						.append("Course:Registration date")
 						.append(((CourseStudent) row).getCourse().getName())
 						.append(":")
 						.append(((CourseStudent) row).getDate())
@@ -121,7 +130,6 @@ public class StudentController {
 
 			case STUDENTS_BY_COURSE:
 				return stringBuilder
-						.append("Student name")
 						.append(((CourseStudent) row).getStudent().getName())
 						.toString();
 		}
