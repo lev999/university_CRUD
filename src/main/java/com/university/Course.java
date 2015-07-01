@@ -21,7 +21,7 @@ public class Course {
 	private String name;
 
 	@ManyToMany(mappedBy = "courses")
-	private Set<Student2> students = new HashSet<Student2>();
+	private Set<Student> students = new HashSet<Student>();
 
 	@Column(name = "course_date", columnDefinition = "timestamp without time zone")
 	@NotNull
@@ -44,11 +44,11 @@ public class Course {
 		this.name = name;
 	}
 
-	public Set<Student2> getStudents() {
+	public Set<Student> getStudents() {
 		return students;
 	}
 
-	public void setStudents(Set<Student2> students) {
+	public void setStudents(Set<Student> students) {
 		this.students = students;
 	}
 

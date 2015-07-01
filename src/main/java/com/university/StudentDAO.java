@@ -1,70 +1,40 @@
 package com.university;
 
-import java.util.List;
-
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.sql.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.NestedServletException;
+
 
 @Repository
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class StudentDAO {
-	
+
 	@Autowired private SessionFactory sessionFactory;
-	
-	/**
-	 * @Transactional annotation below will trigger Spring Hibernate transaction manager to automatically create
-	 * a hibernate session. See src/main/webapp/WEB-INF/servlet-context.xml
-	 */
+
 	@Transactional
-	public List getAllStudents() {
+	public void updateStudent(Student student) {
 		Session session = sessionFactory.getCurrentSession();
-		return session.createQuery("from Student").list();
+		session.saveOrUpdate(student);
 	}
 
 	@Transactional
-	public List getCourseByStudent(Student student){
+	public Student getStudent(String name) {
 		Session session = sessionFactory.getCurrentSession();
 
-		StringBuilder query = new StringBuilder();
-		query
-				.append("FROM Student s where s.name='")
-				.append(student.getName())
-				.append("'");
-		return session.createQuery(query.toString()).list();
+		String str="SELECT id FROM Student s WHERE s.name=:name";
+		Query query=session.createQuery(str);
+		query.setParameter("name", name);
 
+		try{
+			Long entityId = (Long)query.list().get(0);
+			return (Student)session.get(Student.class,entityId);
+		}catch (IndexOutOfBoundsException e){
+			return null;
+		}
 	}
 
-	@Transactional
-	public void addStudent(Student student){
-		Session session = sessionFactory.getCurrentSession();
-		StringBuilder query = new StringBuilder();
-		query
-				.append("FROM Student s WHERE s.name='")
-				.append(student.getName())
-				.append("'AND s.course='")
-				.append(student.getCourse())
-				.append("'");
-
-		List nameFromDB=session.createQuery(query.toString()).list();
-		if(nameFromDB.size()==0)
-			session.save(student);
-	}
-
-
-	@Transactional
-	public List getStudentsByCourse(Student student){
-		Session session = sessionFactory.getCurrentSession();
-		StringBuilder query = new StringBuilder();
-		query
-				.append("FROM Student s where s.course='")
-				.append(student.getCourse())
-				.append("'");
-		return session.createQuery(query.toString()).list();
-	}
 
 }

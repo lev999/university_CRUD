@@ -1,9 +1,8 @@
 package com.university;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.persistence.*;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -11,39 +10,40 @@ import java.util.Date;
 public class Student {
 
 	@Id
+	@Column(name = "student_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+
+	@Column(name = "student_name")
 	private String name;
-	private String course;
 
-	@Column(name = "date", columnDefinition = "timestamp without time zone")
-	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date date;
+	@ManyToMany(cascade = {CascadeType.ALL})
+	@JoinTable(name="univ_schema.course_student",
+			joinColumns={@JoinColumn(name="student_id")},
+			inverseJoinColumns={@JoinColumn(name="course_id")})
+	private Set<Course> courses = new HashSet<Course>();
 
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	public String getCourse() {
-		return course;
-	}
-	public void setCourse(String course) {
-		this.course = course;
-	}
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	public Set<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
+	}
 }

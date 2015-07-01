@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class StudentController {
 
-	@Autowired private StudentDAO studentDAO;
+	@Autowired private Student3DAO student3DAO;
 	@Autowired private CourseDAO courseDAO;
-	@Autowired private Student2DAO student2DAO;
+	@Autowired private StudentDAO studentDAO;
 
 	private static final String STUDENT_BY_COURSE="Show all students on course";
 	private static final String COURSE_BY_STUDENT="Show all courses of student";
@@ -34,7 +34,7 @@ public class StudentController {
 
 		modelMap.put("courseList", fillCourses());
 
-		modelMap.put("students", studentDAO.getAllStudents());
+		modelMap.put("students", student3DAO.getAllStudents());
 		modelMap.put("alert", "List of all students and courses");
 		return "index";
 	}
@@ -45,11 +45,11 @@ public class StudentController {
 	public String processRegistration(@ModelAttribute("userFormData") UserFormData userFormData,
 									  Map<String, Object> modelMap,@RequestParam String action) {
 		Set<Course> courses;
-		modelMap.put("students", studentDAO.getAllStudents());
+		modelMap.put("students", student3DAO.getAllStudents());
 		modelMap.put("alert", "JUST FOR CHECK DATA! " + userFormData.getCourseName() + "-" + userFormData.getStudentName());
 		modelMap.put("courseList", fillCourses());
 
-		Student2 student2=student2DAO.getStudent(userFormData.getStudentName());
+		Student student= studentDAO.getStudent(userFormData.getStudentName());
 		Course course = courseDAO.getCourse(userFormData.getCourseName());
 
 
@@ -58,17 +58,17 @@ public class StudentController {
 			course.setName(userFormData.getCourseName());
 			course.setDate(new Date());
 		}
-		if (student2==null){
-			student2 = new Student2();
-			student2.setName(userFormData.getStudentName());
-			student2.setCourses(new HashSet<Course>());
+		if (student==null){
+			student = new Student();
+			student.setName(userFormData.getStudentName());
+			student.setCourses(new HashSet<Course>());
 		}
 
-		courses=student2.getCourses();
+		courses=student.getCourses();
 		courses.add(course);
-		student2.setCourses(courses);
+		student.setCourses(courses);
 
-		student2DAO.updateStudent(student2);
+		studentDAO.updateStudent(student);
 		return "index";
 	}
 

@@ -12,9 +12,9 @@ INSERT INTO `univ`.`student` (`name`, `course`) VALUES ('Petrov', 'Math');
 
 #for postgresql
 CREATE SCHEMA univ_schema
-CREATE TABLE univ_schema.student2 (
-    student2_id serial PRIMARY KEY
-  , student2_name    text NOT NULL
+CREATE TABLE univ_schema.student (
+    student_id serial PRIMARY KEY
+  , student_name    text NOT NULL
 
 );
 
@@ -24,10 +24,9 @@ CREATE TABLE univ_schema.course (
   , course_date date NOT NULL DEFAULT now()::date
 );
 
-CREATE TABLE univ_schema.course_student2 (
+CREATE TABLE univ_schema.course_student(
     course_id    int REFERENCES univ_schema.course (course_id) ON UPDATE CASCADE
-  , student2_id int REFERENCES univ_schema.student2 (student2_id) ON UPDATE CASCADE
+  , student_id int REFERENCES univ_schema.student (student_id) ON UPDATE CASCADE
 
-
-  , CONSTRAINT course_student2_pkey PRIMARY KEY (course_id, student2_id)
+  , CONSTRAINT course_student_pkey PRIMARY KEY (course_id, student_id)
 );

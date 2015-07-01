@@ -29,7 +29,7 @@
 
     <property name="annotatedClasses">
       <list>
-        <value>com.university.Student2</value>
+        <value>com.university.Student</value>
         <value>com.university.Course</value>
       </list>
     </property>
