@@ -1,12 +1,10 @@
 package com.university;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -42,13 +40,14 @@ public class StudentController {
 	}
 
 
+	@Transactional
 	@RequestMapping(value = "/register",method = RequestMethod.POST)
 	public String processRegistration(@ModelAttribute("userFormData") UserFormData userFormData,
 									  Map<String, Object> modelMap,@RequestParam String action) {
 
 		modelMap.put("students", studentDAO.getAllStudents());
 		modelMap.put("alert", "JUST FOR CHECK DATA! " + userFormData.getCourseName() + "-" + userFormData.getStudentName());
-
+		modelMap.put("courseList", fillCourses());
 //
 //		Course course = new Course();
 //		course.setDate(new Date());
@@ -71,25 +70,29 @@ public class StudentController {
 //		session.save(employee1);
 //		session.save(employee2);
 
-		Student2 student2a=new Student2();
-		Student2 student2b=new Student2();
+		Student2 student2=student2DAO.getStudent(userFormData.getStudentName());
+		Course course = courseDAO.getCourse(userFormData.getCourseName());
 
-		student2a.setName("bbb");
-		student2b.setName("aaa");
-		Course courseA = new Course();
-		Course courseB = new Course();
+		Set<Course> courses;
+		if (course==null){
+			course=new Course();
+			course.setName(userFormData.getCourseName());
+			course.setDate(new Date());
+		}
+		if(student2==null){
+			student2 = new Student2();
+			student2.setName(userFormData.getStudentName());
+			courses= new HashSet<Course>();
+			courses.add(course);
+			student2.setCourses(courses);
+		}
+		else {
+			courses = student2.getCourses();
+			courses.add(course);
+			student2.setCourses(courses);
+		}
 
-		courseA.setName("course A");
-		courseB.setName("course B");
-		courseA.setDate(new Date());
-		courseB.setDate(new Date());
-
-		student2a.getCourses().add(courseA);
-		student2a.getCourses().add(courseB);
-		student2b.getCourses().add(courseA);
-
-		student2DAO.updateStudent(student2a);
-		student2DAO.updateStudent(student2b);
+		student2DAO.updateStudent(student2);
 		return "index";
 	}
 
