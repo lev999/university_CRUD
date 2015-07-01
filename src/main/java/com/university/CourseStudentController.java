@@ -4,12 +4,13 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/")
-public class StudentController {
+public class CourseStudentController {
 
 	@Autowired private CourseStudentDAO courseStudentDAO;
 
