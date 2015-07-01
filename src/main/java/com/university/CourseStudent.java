@@ -2,8 +2,6 @@ package com.university;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by pc-users on 7/1/2015.
@@ -16,6 +14,7 @@ public class CourseStudent {
     private Student student;
     private Course course;
     private Date date;
+
 
     @Id
     @Column(name = "course_student_id")
@@ -53,4 +52,7 @@ public class CourseStudent {
     public void setDate(Date date) {
         this.date = date;
     }
+
+
+
 }

@@ -38,7 +38,4 @@ public class Student {
 	public void setCourseStudents(Set<CourseStudent> courseStudents) {
 		this.courseStudents = courseStudents;
 	}
-	public void addCourseStudent(CourseStudent courseStudent){
-		this.courseStudents.add(courseStudent);
-	}
 }

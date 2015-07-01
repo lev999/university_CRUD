@@ -45,9 +45,6 @@ public class StudentController {
 	@RequestMapping(value = "/register",method = RequestMethod.POST)
 	public String processRegistration(@ModelAttribute("userFormData") UserFormData userFormData,
 									  Map<String, Object> modelMap,@RequestParam String action) {
-		Set<Course> courses;
-		modelMap.put("students", student3DAO.getAllStudents());
-		modelMap.put("alert", "JUST FOR CHECK DATA! " + userFormData.getCourseName() + "-" + userFormData.getStudentName());
 		modelMap.put("courseList", fillCourses());
 
 		Student student= studentDAO.getStudent(userFormData.getStudentName());
@@ -76,38 +73,34 @@ public class StudentController {
 			courseStudent.setCourse(course);
 			courseStudentDAO.updateCourseStudent(courseStudent);
 		}
+		else if(action.equals(STUDENTS_BY_COURSE)){
+			modelMap.put("students", printStudents(course.getCourseStudents()));
+		}
 		else if(action.equals(COURSES_BY_STUDENT)){
-
-			Set<CourseStudent> coursesSet = course.getCourseStudents();
-			Set<CourseStudent> students = student.getCourseStudents();
-			String str="Courses return student# :"+coursesSet.size()+" ";
-			 str+="Student return  :"+students.size()+" ";
-
-			for (CourseStudent student1 : coursesSet) {
-				System.out.println("from course-Student on course:"+student1.getStudent().getName());
-				System.out.println("from course-courses on course:"+student1.getCourse().getName());
-			}
-			for (CourseStudent student1 : students) {
-				System.out.println("from student-Student on course:"+student1.getStudent().getName());
-				System.out.println("from student-courses on course:"+student1.getCourse().getName());
-			}
-
-//			System.out.println();
-
-//			for (CourseStudent courseStudent : courseStudents) {
-//				System.out.println("I am here 2");
-//
-//				if(courseStudent.getStudent().getName().equals(student.getName())){
-//					System.out.println("I am here 3");
-//					System.out.println("My print:" + courseStudent.getCourse().getName());
-//					str+="_"+courseStudent.getCourse().getName();
-//				}
-//			}
-			modelMap.put("alert_error",str);
+			modelMap.put("students", printCourses(student.getCourseStudents()));
 		}
 
 		return "index";
 	}
 
-
+	private ArrayList<String> printStudents(Set<CourseStudent> arrayToIterate){
+		ArrayList<String> outputArray = new ArrayList<String>();
+		outputArray.add("Student name");
+		int i=0;
+		for (CourseStudent row : arrayToIterate) {
+			i++;
+			outputArray.add(row.getStudent().getName());
+		}
+		return outputArray;
+	}
+	private ArrayList<String> printCourses(Set<CourseStudent> arrayToIterate){
+		ArrayList<String> outputArray = new ArrayList<String>();
+		int i=0;
+		outputArray.add("Course:Registration date");
+		for (CourseStudent row : arrayToIterate) {
+			i++;
+			outputArray.add( row.getCourse().getName()+":" + row.getDate());
+		}
+		return outputArray;
+	}
 }

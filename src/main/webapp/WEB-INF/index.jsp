@@ -42,23 +42,13 @@
 
 	<br>
 	<div >${alert}</div>
-	<table  border="1" bordercolor="black">
 
-		<tr>
-			<td>Student name</td>
-			<td>Course name</td>
-			<td>Registration date</td>
-
-		</tr>
-
+<br>
 			<c:forEach var="p" items="${students}">
-				<tr>
-					<td>${p.name}</td>
-					<td>${p.course}</td>
-					<td>${p.date}</td>
-				</tr>
+				${p}<hr>
+
 			</c:forEach>
-	</table>
+		</div>
 </div>
 
 </body>
