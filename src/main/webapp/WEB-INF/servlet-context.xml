@@ -27,12 +27,13 @@
   <!-- Hibernate Session Factory -->
   <bean id="mySessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 
-    <property name="annotatedClasses">
-      <list>
-        <value>com.university.Student</value>
-        <value>com.university.Course</value>
-      </list>
-    </property>
+    <!--<property name="annotatedClasses">-->
+      <!--<list>-->
+        <!--<value>com.university.Student</value>-->
+        <!--<value>com.university.Course</value>-->
+        <!--<value>com.university.CourseStudent</value>-->
+      <!--</list>-->
+    <!--</property>-->
     <property name="dataSource" ref="myDataSource"/>
     <property name="packagesToScan">
       <array>

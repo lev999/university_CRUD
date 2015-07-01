@@ -14,6 +14,7 @@ public class StudentController {
 	@Autowired private Student3DAO student3DAO;
 	@Autowired private CourseDAO courseDAO;
 	@Autowired private StudentDAO studentDAO;
+	@Autowired private CourseStudentDAO courseStudentDAO;
 
 	private static final String STUDENT_BY_COURSE="Show all students on course";
 	private static final String COURSE_BY_STUDENT="Show all courses of student";
@@ -56,19 +57,18 @@ public class StudentController {
 		if (course==null){
 			course=new Course();
 			course.setName(userFormData.getCourseName());
-			course.setDate(new Date());
 		}
 		if (student==null){
 			student = new Student();
 			student.setName(userFormData.getStudentName());
-			student.setCourses(new HashSet<Course>());
 		}
 
-		courses=student.getCourses();
-		courses.add(course);
-		student.setCourses(courses);
+		CourseStudent courseStudent = new CourseStudent();
+		courseStudent.setDate(new Date());
+		courseStudent.setStudent(student);
+		courseStudent.setCourse(course);
 
-		studentDAO.updateStudent(student);
+		courseStudentDAO.updateCourseStudent(courseStudent);
 		return "index";
 	}
 

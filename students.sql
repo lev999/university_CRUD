@@ -21,12 +21,13 @@ CREATE TABLE univ_schema.student (
 CREATE TABLE univ_schema.course (
     course_id  serial PRIMARY KEY
   , course_name     text NOT NULL
-  , course_date date NOT NULL DEFAULT now()::date
+
 );
 
-CREATE TABLE univ_schema.course_student(
-    course_id    int REFERENCES univ_schema.course (course_id) ON UPDATE CASCADE
+CREATE TABLE univ_schema.course_student (
+    course_student_id serial PRIMARY KEY
+  , reg_date date NOT NULL
+  , course_id    int REFERENCES univ_schema.course (course_id) ON UPDATE CASCADE
   , student_id int REFERENCES univ_schema.student (student_id) ON UPDATE CASCADE
 
-  , CONSTRAINT course_student_pkey PRIMARY KEY (course_id, student_id)
 );
