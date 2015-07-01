@@ -16,14 +16,6 @@ public class StudentController {
 	@Autowired private StudentDAO studentDAO;
 	@Autowired private CourseStudentDAO courseStudentDAO;
 
-//	private static final String STUDENTS_BY_COURSE ="Show all students on course";
-//	private static final String COURSES_BY_STUDENT ="Show all courses of student";
-//	private static final String STUDENT_REGISTER="Register student for course";
-//	private static final String SHOW_ALL_STUDENTS="Show all students";
-//	private static final String SHOW_ALL_COURSES="Show all courses";
-
-
-
 	private List fillCourses(){
 		List<String> courseList = new ArrayList();
 		courseList.add("Math");
@@ -80,10 +72,11 @@ public class StudentController {
 		}
 
 		else if(action.equals(Buttons.STUDENTS_BY_COURSE.getValue())){
-			modelMap.put("students", printStudents(course.getCourseStudents()));
+			modelMap.put("students", printAllStudents(new ArrayList (course.getCourseStudents()), Buttons.STUDENTS_BY_COURSE));
 		}
 		else if(action.equals(Buttons.COURSES_BY_STUDENT.getValue())){
-			modelMap.put("students", printCourses(student.getCourseStudents()));
+
+			modelMap.put("students", printAllStudents(new ArrayList (course.getCourseStudents()),Buttons.COURSES_BY_STUDENT));
 		}
 		else if(action.equals(Buttons.SHOW_ALL_COURSES.getValue())){
 			modelMap.put("students", printAllStudents(studentDAO.getAllCourses(), Buttons.SHOW_ALL_COURSES));
@@ -115,31 +108,27 @@ public class StudentController {
 
 			case SHOW_ALL_COURSES:
 				return stringBuilder
-						.append(((Course)row).getName())
+						.append(((Course) row).getName())
 						.toString();
 
+			case COURSES_BY_STUDENT:
+				return stringBuilder
+						.append("Course:Registration date")
+						.append(((CourseStudent) row).getCourse().getName())
+						.append(":")
+						.append(((CourseStudent) row).getDate())
+						.toString();
+
+			case STUDENTS_BY_COURSE:
+				return stringBuilder
+						.append("Student name")
+						.append(((CourseStudent) row).getStudent().getName())
+						.toString();
 		}
 
 	return null;
 	}
 
-
-	private ArrayList<String> printStudents(Set<CourseStudent> arrayToIterate){
-		ArrayList<String> outputArray = new ArrayList<String>();
-		outputArray.add("Student name");
-		for (CourseStudent row : arrayToIterate) {
-			outputArray.add(row.getStudent().getName());
-		}
-		return outputArray;
-	}
-	private ArrayList<String> printCourses(Set<CourseStudent> arrayToIterate){
-		ArrayList<String> outputArray = new ArrayList<String>();
-		outputArray.add("Course:Registration date");
-		for (CourseStudent row : arrayToIterate) {
-			outputArray.add( row.getCourse().getName()+":" + row.getDate());
-		}
-		return outputArray;
-	}
 
 	enum Buttons{
 		STUDENTS_BY_COURSE("Show all students on course"),
@@ -156,11 +145,6 @@ public class StudentController {
 		public String getValue() {
 			return value;
 		}
-		//	private static final String STUDENTS_BY_COURSE ="Show all students on course";
-//	private static final String COURSES_BY_STUDENT ="Show all courses of student";
-//	private static final String STUDENT_REGISTER="Register student for course";
-//	private static final String SHOW_ALL_STUDENTS="Show all students";
-//	private static final String SHOW_ALL_COURSES="Show all courses";
 
 	}
 }
