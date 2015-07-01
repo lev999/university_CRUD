@@ -16,8 +16,8 @@ public class StudentController {
 	@Autowired private StudentDAO studentDAO;
 	@Autowired private CourseStudentDAO courseStudentDAO;
 
-	private static final String STUDENT_BY_COURSE="Show all students on course";
-	private static final String COURSE_BY_STUDENT="Show all courses of student";
+	private static final String STUDENTS_BY_COURSE ="Show all students on course";
+	private static final String COURSES_BY_STUDENT ="Show all courses of student";
 	private static final String STUDENT_REGISTER="Register student for course";
 
 	private List fillCourses(){
@@ -53,22 +53,59 @@ public class StudentController {
 		Student student= studentDAO.getStudent(userFormData.getStudentName());
 		Course course = courseDAO.getCourse(userFormData.getCourseName());
 
-
-		if (course==null){
-			course=new Course();
+		if (course == null) {
+			course = new Course();
 			course.setName(userFormData.getCourseName());
 		}
-		if (student==null){
+		if (student == null) {
 			student = new Student();
 			student.setName(userFormData.getStudentName());
 		}
 
-		CourseStudent courseStudent = new CourseStudent();
-		courseStudent.setDate(new Date());
-		courseStudent.setStudent(student);
-		courseStudent.setCourse(course);
+		if(student.getName().equals("")
+				&&!action.equals(STUDENTS_BY_COURSE)
+				||!student.getName().matches( "^[a-zA-Z\\s]*$")) {
+			return  "index";
+		}
 
-		courseStudentDAO.updateCourseStudent(courseStudent);
+		if(action.equals(STUDENT_REGISTER)) {
+
+			CourseStudent courseStudent = new CourseStudent();
+			courseStudent.setDate(new Date());
+			courseStudent.setStudent(student);
+			courseStudent.setCourse(course);
+			courseStudentDAO.updateCourseStudent(courseStudent);
+		}
+		else if(action.equals(COURSES_BY_STUDENT)){
+
+			Set<CourseStudent> coursesSet = course.getCourseStudents();
+			Set<CourseStudent> students = student.getCourseStudents();
+			String str="Courses return student# :"+coursesSet.size()+" ";
+			 str+="Student return  :"+students.size()+" ";
+
+			for (CourseStudent student1 : coursesSet) {
+				System.out.println("from course-Student on course:"+student1.getStudent().getName());
+				System.out.println("from course-courses on course:"+student1.getCourse().getName());
+			}
+			for (CourseStudent student1 : students) {
+				System.out.println("from student-Student on course:"+student1.getStudent().getName());
+				System.out.println("from student-courses on course:"+student1.getCourse().getName());
+			}
+
+//			System.out.println();
+
+//			for (CourseStudent courseStudent : courseStudents) {
+//				System.out.println("I am here 2");
+//
+//				if(courseStudent.getStudent().getName().equals(student.getName())){
+//					System.out.println("I am here 3");
+//					System.out.println("My print:" + courseStudent.getCourse().getName());
+//					str+="_"+courseStudent.getCourse().getName();
+//				}
+//			}
+			modelMap.put("alert_error",str);
+		}
+
 		return "index";
 	}
 
