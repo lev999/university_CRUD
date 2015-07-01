@@ -16,9 +16,13 @@ public class StudentController {
 	@Autowired private StudentDAO studentDAO;
 	@Autowired private CourseStudentDAO courseStudentDAO;
 
-	private static final String STUDENTS_BY_COURSE ="Show all students on course";
-	private static final String COURSES_BY_STUDENT ="Show all courses of student";
-	private static final String STUDENT_REGISTER="Register student for course";
+//	private static final String STUDENTS_BY_COURSE ="Show all students on course";
+//	private static final String COURSES_BY_STUDENT ="Show all courses of student";
+//	private static final String STUDENT_REGISTER="Register student for course";
+//	private static final String SHOW_ALL_STUDENTS="Show all students";
+//	private static final String SHOW_ALL_COURSES="Show all courses";
+
+
 
 	private List fillCourses(){
 		List<String> courseList = new ArrayList();
@@ -60,47 +64,97 @@ public class StudentController {
 		}
 
 		if(student.getName().equals("")
-				&&!action.equals(STUDENTS_BY_COURSE)
+				&&!action.equals(Buttons.STUDENTS_BY_COURSE)
 				||!student.getName().matches( "^[a-zA-Z\\s]*$")) {
 			return  "index";
 		}
 
-		if(action.equals(STUDENT_REGISTER)) {
+		if(action.equals(Buttons.STUDENT_REGISTER.getValue())) {
 
 			CourseStudent courseStudent = new CourseStudent();
 			courseStudent.setDate(new Date());
 			courseStudent.setStudent(student);
 			courseStudent.setCourse(course);
 			courseStudentDAO.updateCourseStudent(courseStudent);
+			modelMap.put("alert", "Data base updated");
 		}
-		else if(action.equals(STUDENTS_BY_COURSE)){
+
+		else if(action.equals(Buttons.STUDENTS_BY_COURSE.getValue())){
 			modelMap.put("students", printStudents(course.getCourseStudents()));
 		}
-		else if(action.equals(COURSES_BY_STUDENT)){
+		else if(action.equals(Buttons.COURSES_BY_STUDENT.getValue())){
 			modelMap.put("students", printCourses(student.getCourseStudents()));
+		}
+		else if(action.equals(Buttons.SHOW_ALL_COURSES.getValue())){
+			modelMap.put("students", printCourses(student.getCourseStudents()));
+		}
+		else if(action.equals(Buttons.SHOW_ALL_STUDENTS.getValue())){
+			System.out.println("DDDD:"+studentDAO.getAllStudents());
+			modelMap.put("students", printAllStudents(studentDAO.getAllStudents(),Buttons.SHOW_ALL_STUDENTS));
 		}
 
 		return "index";
 	}
 
+	private ArrayList<String> printAllStudents(List allEntities,Buttons buttons) {
+		ArrayList<String> outputArray = new ArrayList<String>();
+		for (Object row : allEntities) {
+			outputArray.add(prepareStr(row,buttons));
+		}
+		return outputArray;
+
+	}
+	private String prepareStr(Object row, Buttons buttons){
+		StringBuilder stringBuilder = new StringBuilder();
+
+		switch (buttons){
+			case SHOW_ALL_STUDENTS:
+				return stringBuilder.append(((Student) row).getName()).toString();
+
+
+		}
+
+	return null;
+	}
+
+
 	private ArrayList<String> printStudents(Set<CourseStudent> arrayToIterate){
 		ArrayList<String> outputArray = new ArrayList<String>();
 		outputArray.add("Student name");
-		int i=0;
 		for (CourseStudent row : arrayToIterate) {
-			i++;
 			outputArray.add(row.getStudent().getName());
 		}
 		return outputArray;
 	}
 	private ArrayList<String> printCourses(Set<CourseStudent> arrayToIterate){
 		ArrayList<String> outputArray = new ArrayList<String>();
-		int i=0;
 		outputArray.add("Course:Registration date");
 		for (CourseStudent row : arrayToIterate) {
-			i++;
 			outputArray.add( row.getCourse().getName()+":" + row.getDate());
 		}
 		return outputArray;
+	}
+
+	enum Buttons{
+		STUDENTS_BY_COURSE("Show all students on course"),
+		COURSES_BY_STUDENT("Show all courses of student"),
+		STUDENT_REGISTER("Register student for course"),
+		SHOW_ALL_STUDENTS("Show all students"),
+		SHOW_ALL_COURSES("Show all courses");
+
+		private String value;
+		Buttons(String str) {
+			this.value =str;
+		}
+
+		public String getValue() {
+			return value;
+		}
+		//	private static final String STUDENTS_BY_COURSE ="Show all students on course";
+//	private static final String COURSES_BY_STUDENT ="Show all courses of student";
+//	private static final String STUDENT_REGISTER="Register student for course";
+//	private static final String SHOW_ALL_STUDENTS="Show all students";
+//	private static final String SHOW_ALL_COURSES="Show all courses";
+
 	}
 }

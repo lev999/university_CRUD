@@ -21,14 +21,18 @@
 				<td>Student Name:</td>
 				<td><form:input path="studentName" /></td>
 			</tr>
-
-
 			<tr>
 				<td>Course:</td>
 				<td><form:select path="courseName" items="${courseList}" /></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center"><input type="submit" name="action" value="Register student for course" /></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><input type="submit" name="action" value="Show all students" /></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><input type="submit" name="action" value="Show all courses" /></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center"><input type="submit" name="action" value="Show all students on course" /></td>
@@ -41,7 +45,7 @@
 
 
 	<br>
-	<div >${alert}</div>
+	<div style="color: blue">${alert}</div>
 
 <br>
 			<c:forEach var="p" items="${students}">
